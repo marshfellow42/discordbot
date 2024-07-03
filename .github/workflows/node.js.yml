@@ -31,4 +31,4 @@ jobs:
       run: npm run build
 
     - name: Deploy
-      run: npm run deploy  # Adjust this to your deployment command
+      run: npm run start  # Adjust this to your deployment command
