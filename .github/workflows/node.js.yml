@@ -33,7 +33,7 @@ jobs:
     - name: create env file
       run: |
         touch .env
-        echo BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> .env
+        echo BOT_TOKEN=${{ secrets.BOT_TOKEN }} >> .env
 
     - name: Deploy
       run: npm run start  # Adjust this to your deployment command
