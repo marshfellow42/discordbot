@@ -10,7 +10,14 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+   create_env_file_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create .env file
+        uses: ozaytsev86/create-env-file@v1
+        with:
+          ENV_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+   build:
 
     runs-on: ubuntu-latest
 
