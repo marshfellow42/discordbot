@@ -1,41 +1,36 @@
-name: Create envfile
+name: Deploy Node.js Application
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Trigger this workflow on push to the main branch
 
 jobs:
-
-  create-envfile:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v2.0
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        envkey_DEBUG: false
-        envkey_SOME_API_KEY: "123456abcdef"
-        envkey_SECRET_KEY: ${{ secrets.BOT_TOKEN }}
+        node-version: '22'  # Specify the Node.js version you want to use
 
-  build:
+    - name: Install dependencies
+      run: npm install
 
-    runs-on: ubuntu-latest
+    - name: Set up environment variables
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        NODE_OPTIONS: ${{ secrets.NODE_OPTIONS }}
+      run: |
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> $GITHUB_ENV
+        echo "NODE_OPTIONS=${{ secrets.NODE_OPTIONS }}" >> $GITHUB_ENV
 
-    strategy:
-      matrix:
-        node-version: [20.12.x, 21.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    - name: Run build
+      run: npm run build
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm run start
+    - name: Deploy
+      run: npm run deploy  # Adjust this to your deployment command
