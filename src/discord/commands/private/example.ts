@@ -2,7 +2,7 @@ import { Command, Responder, ResponderType } from "#base";
 import { settings } from "#settings";
 import { createEmbed, createRow, sleep } from "@magicyan/discord";
 import { ApplicationCommandType, ButtonBuilder, ButtonStyle } from "discord.js";
-import { icon } from "functions/utils/emojis.js";
+import { icon } from "#functions";
 
 new Command({
     name: "example",
